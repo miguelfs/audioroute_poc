@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct audioroute_pocApp: App {
+struct AudioApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

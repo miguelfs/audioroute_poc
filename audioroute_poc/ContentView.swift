@@ -7,10 +7,23 @@
 
 import SwiftUI
 
+
+
 struct ContentView: View {
+    @State private var isRecMode = false
+//    @State private var hasAudioAttached = false
+//    @State private var playerState: PlayerState = .stop
+    @ObservedObject var audioController = AudioController();
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack(alignment: .leading){
+            Text("Audio App 🎙").font(.title)
+            Text("Record and play audio").font(.subheadline)
+            ProgressView(value: audioController.progress)
+            Toggle(isOn: $isRecMode) {
+                Text("isRecMode")
+            }
+        }.padding()
     }
 }
 

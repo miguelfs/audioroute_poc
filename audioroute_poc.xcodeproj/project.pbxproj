@@ -7,19 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		49C053CC26A70CAC007582DE /* audioroute_pocApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C053CB26A70CAC007582DE /* audioroute_pocApp.swift */; };
+		49C053CC26A70CAC007582DE /* AudioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C053CB26A70CAC007582DE /* AudioApp.swift */; };
 		49C053CE26A70CAC007582DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C053CD26A70CAC007582DE /* ContentView.swift */; };
 		49C053D026A70CAE007582DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C053CF26A70CAE007582DE /* Assets.xcassets */; };
 		49C053D326A70CAE007582DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C053D226A70CAE007582DE /* Preview Assets.xcassets */; };
+		49C053DB26A7467B007582DE /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C053DA26A7467B007582DE /* AudioController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		49C053C826A70CAC007582DE /* audioroute_poc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = audioroute_poc.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		49C053CB26A70CAC007582DE /* audioroute_pocApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = audioroute_pocApp.swift; sourceTree = "<group>"; };
+		49C053CB26A70CAC007582DE /* AudioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioApp.swift; sourceTree = "<group>"; };
 		49C053CD26A70CAC007582DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		49C053CF26A70CAE007582DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		49C053D226A70CAE007582DE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		49C053D426A70CAE007582DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		49C053DA26A7467B007582DE /* AudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,11 +54,12 @@
 		49C053CA26A70CAC007582DE /* audioroute_poc */ = {
 			isa = PBXGroup;
 			children = (
-				49C053CB26A70CAC007582DE /* audioroute_pocApp.swift */,
+				49C053CB26A70CAC007582DE /* AudioApp.swift */,
 				49C053CD26A70CAC007582DE /* ContentView.swift */,
 				49C053CF26A70CAE007582DE /* Assets.xcassets */,
 				49C053D426A70CAE007582DE /* Info.plist */,
 				49C053D126A70CAE007582DE /* Preview Content */,
+				49C053DA26A7467B007582DE /* AudioController.swift */,
 			);
 			path = audioroute_poc;
 			sourceTree = "<group>";
@@ -138,8 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49C053DB26A7467B007582DE /* AudioController.swift in Sources */,
 				49C053CE26A70CAC007582DE /* ContentView.swift in Sources */,
-				49C053CC26A70CAC007582DE /* audioroute_pocApp.swift in Sources */,
+				49C053CC26A70CAC007582DE /* AudioApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,16 +275,18 @@
 				DEVELOPMENT_ASSET_PATHS = "\"audioroute_poc/Preview Content\"";
 				DEVELOPMENT_TEAM = DTGA82H2MX;
 				ENABLE_PREVIEWS = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = audioroute_poc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelfs.example.audioroute-poc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -293,16 +299,18 @@
 				DEVELOPMENT_ASSET_PATHS = "\"audioroute_poc/Preview Content\"";
 				DEVELOPMENT_TEAM = DTGA82H2MX;
 				ENABLE_PREVIEWS = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = audioroute_poc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelfs.example.audioroute-poc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
