@@ -1,28 +1,39 @@
-//
-//  ContentView.swift
-//  audioroute_poc
-//
-//  Created by Miguel Fernandes de Sousa on 20/07/21.
-//
 
 import SwiftUI
 
 
 
 struct ContentView: View {
-    @State private var isRecMode = false
-//    @State private var hasAudioAttached = false
-//    @State private var playerState: PlayerState = .stop
-    @ObservedObject var audioController = AudioController();
+    @StateObject var audioController = AudioController();
+    @State var isMicAvailable = false {
+        didSet(value) {
+            audioController.audioMode = value == true ? .playAndRecord : .playback
+            }
+    }
     
     var body: some View {
         VStack(alignment: .leading){
             Text("Audio App 🎙").font(.title)
-            Text("Record and play audio").font(.subheadline)
+            Text("Play audio and listen to yourself").font(.subheadline)
             ProgressView(value: audioController.progress)
-            Toggle(isOn: $isRecMode) {
+            Toggle(isOn: $isMicAvailable) {
                 Text("isRecMode")
             }
+            HStack{
+                Button(action: audioController.switchPlayPause) {
+                    if audioController.playerState == .paused {
+                        Text("▶️")
+                    }
+                    if audioController.playerState == .playing {
+                        Text("⏸")
+                    }
+                }
+            }
+                List(audioController.mics) {
+                    if isMicAvailable {
+                        Text($0.name)
+                    }
+                }.padding()
         }.padding()
     }
 }
