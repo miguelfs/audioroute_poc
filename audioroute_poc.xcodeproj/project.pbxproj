@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		497A6A4526AAEEB6000C1383 /* AudioCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497A6A4426AAEEB6000C1383 /* AudioCore.swift */; };
+		497A6A4726AB0C5A000C1383 /* AudioSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497A6A4626AB0C5A000C1383 /* AudioSignal.swift */; };
 		49C053CC26A70CAC007582DE /* AudioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C053CB26A70CAC007582DE /* AudioApp.swift */; };
 		49C053CE26A70CAC007582DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C053CD26A70CAC007582DE /* ContentView.swift */; };
 		49C053D026A70CAE007582DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 49C053CF26A70CAE007582DE /* Assets.xcassets */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		497A6A4426AAEEB6000C1383 /* AudioCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCore.swift; sourceTree = "<group>"; };
+		497A6A4626AB0C5A000C1383 /* AudioSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSignal.swift; sourceTree = "<group>"; };
 		49C053C826A70CAC007582DE /* audioroute_poc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = audioroute_poc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49C053CB26A70CAC007582DE /* AudioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioApp.swift; sourceTree = "<group>"; };
 		49C053CD26A70CAC007582DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,6 +64,8 @@
 				49C053D426A70CAE007582DE /* Info.plist */,
 				49C053D126A70CAE007582DE /* Preview Content */,
 				49C053DA26A7467B007582DE /* AudioController.swift */,
+				497A6A4426AAEEB6000C1383 /* AudioCore.swift */,
+				497A6A4626AB0C5A000C1383 /* AudioSignal.swift */,
 			);
 			path = audioroute_poc;
 			sourceTree = "<group>";
@@ -142,8 +148,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				49C053DB26A7467B007582DE /* AudioController.swift in Sources */,
+				497A6A4526AAEEB6000C1383 /* AudioCore.swift in Sources */,
 				49C053CE26A70CAC007582DE /* ContentView.swift in Sources */,
 				49C053CC26A70CAC007582DE /* AudioApp.swift in Sources */,
+				497A6A4726AB0C5A000C1383 /* AudioSignal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,16 +281,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"audioroute_poc/Preview Content\"";
-				DEVELOPMENT_TEAM = DTGA82H2MX;
+				DEVELOPMENT_TEAM = LZS2W7CLYF;
 				ENABLE_PREVIEWS = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = audioroute_poc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelfs.example.audioroute-poc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -297,16 +304,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"audioroute_poc/Preview Content\"";
-				DEVELOPMENT_TEAM = DTGA82H2MX;
+				DEVELOPMENT_TEAM = LZS2W7CLYF;
 				ENABLE_PREVIEWS = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				INFOPLIST_FILE = audioroute_poc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.miguelfs.example.audioroute-poc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
