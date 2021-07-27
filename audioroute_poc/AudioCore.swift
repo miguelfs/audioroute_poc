@@ -20,6 +20,7 @@ class AudioCore {
         
         try! setEngine(.playback)
         attachSignalSample()
+        try! engine.start()
     }
     
     func setCategory(_ value: AVAudioSession.Category) {
@@ -34,13 +35,11 @@ class AudioCore {
         }
         if mode == .playback {
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
-            try! engine.start()
             return
         }
         if mode == .playAndRecord {
             engine.connect(engine.inputNode, to: engine.mainMixerNode, format: engine.inputNode.inputFormat(forBus: 0))
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
-            try! engine.start()
             return
         }
         throw AudioCoreError.NotSupportedCategoryError
@@ -72,7 +71,7 @@ class AudioCore {
     }
     
     func play() {
-        try! engine.start()
+        //        try! engine.start()
         for player in players {
             player.play()
         }
