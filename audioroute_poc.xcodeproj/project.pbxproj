@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		49748D7726AC60850069B132 /* AudioRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49748D7626AC60850069B132 /* AudioRoute.swift */; };
+		49748D7926AC6B610069B132 /* Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49748D7826AC6B610069B132 /* Handler.swift */; };
 		497A6A4526AAEEB6000C1383 /* AudioCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497A6A4426AAEEB6000C1383 /* AudioCore.swift */; };
 		497A6A4726AB0C5A000C1383 /* AudioSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497A6A4626AB0C5A000C1383 /* AudioSignal.swift */; };
 		49C053CC26A70CAC007582DE /* AudioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C053CB26A70CAC007582DE /* AudioApp.swift */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		49748D7626AC60850069B132 /* AudioRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRoute.swift; sourceTree = "<group>"; };
+		49748D7826AC6B610069B132 /* Handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Handler.swift; sourceTree = "<group>"; };
 		497A6A4426AAEEB6000C1383 /* AudioCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCore.swift; sourceTree = "<group>"; };
 		497A6A4626AB0C5A000C1383 /* AudioSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSignal.swift; sourceTree = "<group>"; };
 		49C053C826A70CAC007582DE /* audioroute_poc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = audioroute_poc.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +70,8 @@
 				49C053DA26A7467B007582DE /* AudioController.swift */,
 				497A6A4426AAEEB6000C1383 /* AudioCore.swift */,
 				497A6A4626AB0C5A000C1383 /* AudioSignal.swift */,
+				49748D7626AC60850069B132 /* AudioRoute.swift */,
+				49748D7826AC6B610069B132 /* Handler.swift */,
 			);
 			path = audioroute_poc;
 			sourceTree = "<group>";
@@ -147,8 +153,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49748D7926AC6B610069B132 /* Handler.swift in Sources */,
 				49C053DB26A7467B007582DE /* AudioController.swift in Sources */,
 				497A6A4526AAEEB6000C1383 /* AudioCore.swift in Sources */,
+				49748D7726AC60850069B132 /* AudioRoute.swift in Sources */,
 				49C053CE26A70CAC007582DE /* ContentView.swift in Sources */,
 				49C053CC26A70CAC007582DE /* AudioApp.swift in Sources */,
 				497A6A4726AB0C5A000C1383 /* AudioSignal.swift in Sources */,
