@@ -8,7 +8,7 @@ struct ContentView: View {
     @State var isMicAvailable = false {
         didSet(value) {
             audioController.audioMode = value == true ? .playAndRecord : .playback
-            }
+        }
     }
     
     var body: some View {
@@ -29,11 +29,11 @@ struct ContentView: View {
                     }
                 }
             }
-                List(audioController.mics) {
-                    if isMicAvailable {
-                        Text($0.name)
-                    }
-                }.padding()
+            List(audioController.mics) {
+                if isMicAvailable {
+                    Text($0.name)
+                }
+            }.padding()
         }.padding()
     }
 }
