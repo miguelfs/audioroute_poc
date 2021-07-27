@@ -15,9 +15,13 @@ struct Mic: Identifiable {
     let id = UUID()
 }
 
+func mapModeToCategory(mode value: AudioMode) -> AVAudioSession.Category {
+    let category: AVAudioSession.Category = value == .playAndRecord ? .playback : .playAndRecord
+    return category
+}
+
 class AudioController: ObservableObject {
     @Published var progress = 0.0
-    @Published var countAudiosAttached = 0
     @Published var playerState: PlayerState = .paused
     @Published var mics = [Mic(name: "first mic"), Mic(name: "second mic")]
     
@@ -25,14 +29,19 @@ class AudioController: ObservableObject {
         didSet(value) {
             let category: AVAudioSession.Category = value == .playAndRecord ? .playback : .playAndRecord
             self.audioCore.setCategory(category)
+//            self.audioCore.setCategory(mapModeToCategory(mode: value))
+
         }
     }
     
     var audioCore: AudioCore!
     
     init() {
-        self.audioCore = AudioCore(completionHandler: {
-            self.playerState = .paused
+//        self.audioCore = AudioCore(category: mapModeToCategory(mode: audioMode), completionHandler: {
+        self.audioCore = AudioCore(category: mapModeToCategory(mode: audioMode), completionHandler: {
+            DispatchQueue.main.async {
+                self.playerState = .paused
+            }
         })
     }
     

@@ -1,20 +1,25 @@
 
 import AVFoundation
 
-enum AudioCoreError: Error { case NotSupportedCategoryError, UnnalowedEngineRewiring }
+enum AudioCoreError: Error { case NotSupportedCategoryError, UnnalowedEngineRewiring, MissingTracksError }
 
 typealias FinishPlayingCallback = () -> Void
+
+struct Track: Hashable {
+    let node: AVAudioPlayerNode
+    let file: AVAudioFile
+}
 
 class AudioCore {
     private let session = AVAudioSession.sharedInstance()
     private let engine = AVAudioEngine.init()
-    private var players = Set<AVAudioPlayerNode>()
+    private var tracks = Set<Track>()
     private var onFinishPlaying: () -> Void
     private var audioRoute = AudioRoute()
     
-    init(completionHandler: @escaping (() -> Void)) {
+    init(category: AVAudioSession.Category, completionHandler: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
-        try! session.setCategory(.playback)
+//        try! session.setCategory(category)
         try! session.setActive(true)
         setNotifications()
         
@@ -24,7 +29,9 @@ class AudioCore {
     }
     
     func setCategory(_ value: AVAudioSession.Category) {
+//        clearEngine()
         try! session.setCategory(value)
+//        try! setEngine(value)
     }
     
     private func setNotifications() {}
@@ -33,55 +40,75 @@ class AudioCore {
         if engine.isRunning {
             throw AudioCoreError.UnnalowedEngineRewiring
         }
-        if mode == .playback {
+        switch mode {
+        case .playback:
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
-            return
-        }
-        if mode == .playAndRecord {
+        case .playAndRecord:
             engine.connect(engine.inputNode, to: engine.mainMixerNode, format: engine.inputNode.inputFormat(forBus: 0))
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
-            return
+        default:
+            throw AudioCoreError.NotSupportedCategoryError
         }
-        throw AudioCoreError.NotSupportedCategoryError
     }
     
     private var sampleRate: Double {
         return engine.inputNode.inputFormat(forBus: 0).sampleRate
     }
     
+    private func rewind(_ track: Track) {
+        let handler = {
+//            if track.node.isPlaying {
+                track.node.pause()
+                self.rewind(track)
+                self.onFinishPlaying()
+        }
+        track.node.scheduleFile(track.file, at: nil, completionHandler: handler)
+    }
+    
     private func attachSignalSample() {
-        let signal = AudioSignal(sampleRate: sampleRate, soundDuration: 3)
+        let signal =  AudioSignal(sampleRate: sampleRate, waveform: .completion, startOffset: 0)
         let (_, url) = signal.generateFile()
         let file = try! AVAudioFile(forReading: url)
-        //        let buffer = signal.getAsPCMBuffer(audioFormat: engine.mainMixerNode.inputFormat(forBus: 0))
         
         let playerNode = AVAudioPlayerNode()
-        players.insert(playerNode)
+        let track = Track(node: playerNode, file: file)
+        tracks.insert(track)
         engine.attach(playerNode)
         engine.connect(playerNode, to: engine.mainMixerNode, format: engine.outputNode.outputFormat(forBus: 0))
-        playerNode.scheduleFile(file, at: AVAudioTime(hostTime: 0), completionHandler: nil)
-        //        playerNode.scheduleBuffer(buffer, completionHandler: nil)
+        rewind(track)
     }
     
     private func clearEngine() {
         engine.stop()
         engine.detach(engine.inputNode)
         engine.detach(engine.outputNode)
-        for player in players {
-            engine.detach(player)
+        for track in tracks {
+            engine.detach(track.node)
         }
+        tracks.removeAll()
     }
     
     func play() {
-        //        try! engine.start()
-        for player in players {
-            player.play()
+        for track in tracks {
+            track.node.play()
         }
     }
     
     func pause() {
-        for player in players {
-            player.pause()
+        for track in tracks {
+            track.node.pause()
         }
     }
+    
+    var t0: AVAudioTime {
+        for track in tracks {
+            let sampleRate = track.file.processingFormat.sampleRate
+            let sampleTime = AVAudioFramePosition(0.01 * sampleRate)
+            return AVAudioTime(hostTime: mach_absolute_time(), sampleTime: sampleTime, atRate: sampleRate)
+//            return AVAudioTime(sampleTime: sampleTime, atRate: sampleRate)
+        }
+        let sampleTime = AVAudioFramePosition(0.01 * self.sampleRate)
+        return AVAudioTime(hostTime: mach_absolute_time(), sampleTime: sampleTime, atRate: sampleRate)
+//        return AVAudioTime(sampleTime: sampleTime, atRate: sampleRate)
+}
 }
