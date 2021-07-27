@@ -35,7 +35,7 @@ class AudioController: ObservableObject {
             self.playerState = .paused
         })
     }
-
+    
     func switchPlayPause() {
         if playerState == .paused {
             audioCore.play()
@@ -47,5 +47,5 @@ class AudioController: ObservableObject {
             playerState = .paused
         }
     }
-    }
+}
 
