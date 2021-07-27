@@ -50,15 +50,17 @@ class AudioCore {
     }
     
     private func attachSignalSample() {
-        let signal = AudioSignal(sampleRate: sampleRate, frequency: Float.random(in: 110...4400), soundDuration: 10)
+        let signal = AudioSignal(sampleRate: sampleRate, soundDuration: 3)
         let (_, url) = signal.generateFile()
         let file = try! AVAudioFile(forReading: url)
+        //        let buffer = signal.getAsPCMBuffer(audioFormat: engine.mainMixerNode.inputFormat(forBus: 0))
         
         let playerNode = AVAudioPlayerNode()
         players.insert(playerNode)
         engine.attach(playerNode)
         engine.connect(playerNode, to: engine.mainMixerNode, format: engine.outputNode.outputFormat(forBus: 0))
-        playerNode.scheduleFile(file, at: AVAudioTime(sampleTime: 0, atRate: sampleRate), completionHandler: onFinishPlaying)
+        playerNode.scheduleFile(file, at: AVAudioTime(hostTime: 0), completionHandler: nil)
+        //        playerNode.scheduleBuffer(buffer, completionHandler: nil)
     }
     
     private func clearEngine() {
