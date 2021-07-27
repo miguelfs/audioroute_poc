@@ -10,6 +10,7 @@ class AudioCore {
     private let engine = AVAudioEngine.init()
     private var players = Set<AVAudioPlayerNode>()
     private var onFinishPlaying: () -> Void
+    private var audioRoute = AudioRoute()
     
     init(completionHandler: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
