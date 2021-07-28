@@ -29,6 +29,7 @@ struct AudioSignal {
 
     init(sampleRate: Double = 48000, waveform: Waveform = .senoid, frequency: Float = 880,
          startOffset: Double = 0, soundDuration: Double = 1) {
+        assert(sampleRate > 0, "sample rate is not a positive non-zero value")
         self.sampleRate = sampleRate
         self.waveform = waveform
         self.frequency = frequency
