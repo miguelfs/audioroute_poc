@@ -17,7 +17,7 @@ struct Mic: Identifiable, Hashable {
 }
 
 func mapModeToCategory(mode value: AudioMode) -> AVAudioSession.Category {
-    let category: AVAudioSession.Category = value == .playAndRecord ? .playback : .playAndRecord
+    let category: AVAudioSession.Category = value == .playAndRecord ? .playAndRecord : .playback
     return category
 }
 
@@ -26,12 +26,9 @@ class AudioController: ObservableObject {
     @Published var playerState: PlayerState = .paused
     @Published var mics = [Mic(name: "first mic"), Mic(name: "second mic")]
     
-    @Published var audioMode: AudioMode = .playAndRecord {
-        didSet(value) {
-            let category: AVAudioSession.Category = value == .playAndRecord ? .playback : .playAndRecord
-            self.audioCore.setCategory(category)
-//            self.audioCore.setCategory(mapModeToCategory(mode: value))
-
+    @Published var audioMode: AudioMode = .playback {
+        willSet(value) {            
+            self.audioCore.updateCategory(mapModeToCategory(mode: value))
         }
     }
     
