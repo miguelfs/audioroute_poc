@@ -31,9 +31,7 @@ class AudioController: ObservableObject {
             self.audioCore.updateCategory(mapModeToCategory(mode: value))
         }
     }
-    
     var audioCore: AudioCore!
-    
     init() {
         self.audioCore = AudioCore(category: mapModeToCategory(mode: audioMode), completionHandler: {
             DispatchQueue.main.async {

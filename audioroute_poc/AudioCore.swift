@@ -57,7 +57,6 @@ class AudioCore {
     
     private func rewind(_ track: Track) {
         let handler = {
-//            if track.node.isPlaying {
                 track.node.pause()
                 self.rewind(track)
                 self.onFinishPlaying()
@@ -78,16 +77,6 @@ class AudioCore {
         rewind(track)
     }
     
-    private func clearEngine() {
-        engine.stop()
-        engine.detach(engine.inputNode)
-        engine.detach(engine.outputNode)
-        for track in tracks {
-            engine.detach(track.node)
-        }
-        tracks.removeAll()
-    }
-    
     func play() {
         for track in tracks {
             track.node.play()
@@ -99,16 +88,4 @@ class AudioCore {
             track.node.pause()
         }
     }
-    
-    var t0: AVAudioTime {
-        for track in tracks {
-            let sampleRate = track.file.processingFormat.sampleRate
-            let sampleTime = AVAudioFramePosition(0.01 * sampleRate)
-            return AVAudioTime(hostTime: mach_absolute_time(), sampleTime: sampleTime, atRate: sampleRate)
-//            return AVAudioTime(sampleTime: sampleTime, atRate: sampleRate)
-        }
-        let sampleTime = AVAudioFramePosition(0.01 * self.sampleRate)
-        return AVAudioTime(hostTime: mach_absolute_time(), sampleTime: sampleTime, atRate: sampleRate)
-//        return AVAudioTime(sampleTime: sampleTime, atRate: sampleRate)
-}
 }
