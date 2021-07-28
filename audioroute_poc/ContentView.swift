@@ -29,9 +29,16 @@ struct ContentView: View {
                     }
                 }
             }
-            List(audioController.mics) {
+            List(audioController.mics) { mic in
+                HStack {
                 if isMicAvailable {
-                    Text($0.name)
+                    Text(mic.name).foregroundColor(.accentColor)
+                    if mic.isActive {
+                        Image(systemName: "checkmark").foregroundColor(.accentColor)
+                    }
+                }
+                }.onTapGesture {
+                    print("Show details for user", mic)
                 }
             }.padding()
         }.padding()

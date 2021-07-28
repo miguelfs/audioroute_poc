@@ -37,7 +37,6 @@ class AudioController: ObservableObject {
     var audioCore: AudioCore!
     
     init() {
-//        self.audioCore = AudioCore(category: mapModeToCategory(mode: audioMode), completionHandler: {
         self.audioCore = AudioCore(category: mapModeToCategory(mode: audioMode), completionHandler: {
             DispatchQueue.main.async {
                 self.playerState = .paused
