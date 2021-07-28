@@ -40,6 +40,18 @@ class AudioController: ObservableObject {
                 self.playerState = .paused
             }
         })
+        mics = audioCore.audioRoute.getAvailableInputs().map{Mic(name: $0, isActive: $0 == getActiveMic())}
+    }
+    
+    func getActiveMic() -> String {
+        return audioCore.audioRoute.getCurrentInput()
+    }
+    
+    func selectMic(_ mic: Mic) {
+        audioCore.audioRoute.setInput(portName: mic.name)
+        for i in 0..<mics.count {
+            mics[i].isActive = mic.id == mics[i].id ? true : false
+        }
     }
     
     func switchPlayPause() {
