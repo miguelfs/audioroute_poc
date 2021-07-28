@@ -41,8 +41,6 @@ struct ContentView: View {
                         Image(systemName: "checkmark").foregroundColor(.accentColor)
                     }
                 }
-                }.onTapGesture {
-                    print("Show details for user", mic)
                 }
             }.padding()
         }.padding()

@@ -19,19 +19,21 @@ class AudioCore {
     
     init(category: AVAudioSession.Category, completionHandler: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
-//        try! session.setCategory(category)
         try! session.setActive(true)
         setNotifications()
         
-        try! setEngine(.playback)
+        try! setEngine(category)
         attachSignalSample()
         try! engine.start()
     }
     
-    func setCategory(_ value: AVAudioSession.Category) {
-//        clearEngine()
+    func updateCategory(_ value: AVAudioSession.Category) {
+        engine.stop()
         try! session.setCategory(value)
-//        try! setEngine(value)
+        try! setEngine(value)
+        try! session.setActive(true)
+        try! engine.start()
+        
     }
     
     private func setNotifications() {}
@@ -43,6 +45,7 @@ class AudioCore {
         switch mode {
         case .playback:
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
+            engine.disconnectNodeOutput(engine.inputNode)
         case .playAndRecord:
             engine.connect(engine.inputNode, to: engine.mainMixerNode, format: engine.inputNode.inputFormat(forBus: 0))
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
