@@ -1,7 +1,7 @@
 
 import AVFoundation
 
-enum AudioCoreError: Error { case NotSupportedCategoryError, UnnalowedEngineRewiring, MissingTracksError }
+enum AudioCoreError: Error { case NotSupportedCategoryError, UnnalowedEngineRewiring, MissingTracksError, TooManyOutputs}
 
 typealias FinishPlayingCallback = () -> Void
 
@@ -19,18 +19,20 @@ class AudioCore {
     
     init(category: AVAudioSession.Category, completionHandler: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
-//        try! session.setCategory(category)
+        try! session.setCategory(category)
         try! session.setActive(true)
         setNotifications()
         
-        try! setEngine(.playback)
+        try! setEngine(category)
         attachSignalSample()
         try! engine.start()
     }
     
-    func setCategory(_ value: AVAudioSession.Category) {
-//        clearEngine()
+    func updateCategory(_ value: AVAudioSession.Category) {
+        engine.stop()
         try! session.setCategory(value)
+        try! setEngine(value)
+        try! engine.start()
 //        try! setEngine(value)
     }
     
@@ -43,6 +45,12 @@ class AudioCore {
         switch mode {
         case .playback:
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
+            if engine.inputNode.numberOfOutputs > 1 {
+                throw AudioCoreError.TooManyOutputs
+            }
+            if engine.inputNode.numberOfOutputs == 1 {
+                engine.disconnectNodeOutput(engine.inputNode)
+            }
         case .playAndRecord:
             engine.connect(engine.inputNode, to: engine.mainMixerNode, format: engine.inputNode.inputFormat(forBus: 0))
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))

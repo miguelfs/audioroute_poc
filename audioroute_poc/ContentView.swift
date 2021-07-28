@@ -5,11 +5,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var audioController = AudioController();
-    @State var isMicAvailable = false {
-        didSet(value) {
-            audioController.audioMode = value == true ? .playAndRecord : .playback
-        }
-    }
+    @State var isMicAvailable = false
     
     var body: some View {
         VStack(alignment: .leading){
@@ -17,7 +13,7 @@ struct ContentView: View {
             Text("Play audio and listen to yourself").font(.subheadline)
             ProgressView(value: audioController.progress)
             Toggle("isRecMode", isOn: $isMicAvailable).onChange(of: isMicAvailable) { value in
-                print("abuble")
+                audioController.audioMode = value == true ? .playAndRecord : .playback
             }
             HStack{
                 Button(action: audioController.switchPlayPause) {

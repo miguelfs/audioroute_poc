@@ -28,7 +28,7 @@ class AudioController: ObservableObject {
     @Published var audioMode: AudioMode = .playAndRecord {
         didSet(value) {
             let category: AVAudioSession.Category = value == .playAndRecord ? .playback : .playAndRecord
-            self.audioCore.setCategory(category)
+            self.audioCore.updateCategory(category)
 //            self.audioCore.setCategory(mapModeToCategory(mode: value))
 
         }
