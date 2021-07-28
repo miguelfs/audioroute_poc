@@ -15,7 +15,7 @@ class AudioCore {
     private let engine = AVAudioEngine.init()
     private var tracks = Set<Track>()
     private var onFinishPlaying: () -> Void
-    private var audioRoute = AudioRoute()
+    public var audioRoute = AudioRoute()
     
     init(category: AVAudioSession.Category, completionHandler: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
