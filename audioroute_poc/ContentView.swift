@@ -16,8 +16,8 @@ struct ContentView: View {
             Text("Audio App 🎙").font(.title)
             Text("Play audio and listen to yourself").font(.subheadline)
             ProgressView(value: audioController.progress)
-            Toggle(isOn: $isMicAvailable) {
-                Text("isRecMode")
+            Toggle("isRecMode", isOn: $isMicAvailable).onChange(of: isMicAvailable) { value in
+                print("abuble")
             }
             HStack{
                 Button(action: audioController.switchPlayPause) {
