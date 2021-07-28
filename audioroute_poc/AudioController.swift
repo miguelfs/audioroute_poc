@@ -10,7 +10,7 @@ enum RecorderState { case recording, paused }
 
 enum AudioMode { case playAndRecord, playback }
 
-struct Mic: Identifiable {
+struct Mic: Identifiable, Hashable {
     let name: String
     let id = UUID()
 }

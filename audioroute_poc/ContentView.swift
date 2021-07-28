@@ -30,7 +30,11 @@ struct ContentView: View {
                 }
             }
             List(audioController.mics) { mic in
-                HStack {
+                Button(action: {
+                    if !mic.isActive {
+                    audioController.selectMic(mic)
+                    }
+                }) {
                 if isMicAvailable {
                     Text(mic.name).foregroundColor(.accentColor)
                     if mic.isActive {
