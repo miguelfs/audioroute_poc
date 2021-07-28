@@ -12,6 +12,7 @@ enum AudioMode { case playAndRecord, playback }
 
 struct Mic: Identifiable, Hashable {
     let name: String
+    var isActive: Bool = false
     let id = UUID()
 }
 
