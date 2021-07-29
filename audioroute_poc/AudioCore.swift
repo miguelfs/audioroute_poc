@@ -16,6 +16,7 @@ class AudioCore {
     private var tracks = Set<Track>()
     private var onFinishPlaying: () -> Void
     public var audioRoute = AudioRoute()
+    private let notifications = Notifications()
     
     init(category: AVAudioSession.Category, completionHandler: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
