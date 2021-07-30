@@ -4,21 +4,19 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @StateObject var audioController = AudioController();
-    @State var isMicAvailable = false {
-        didSet(value) {
-            audioController.audioMode = value == true ? .playAndRecord : .playback
-        }
-    }
+    @StateObject var audioController = AudioController()
+//    @State var isMicAvailable = false {
+//        didSet(value) {
+//            audioController.audioMode = value == true ? .playAndRecord : .playback
+//        }
+//    }
     
     var body: some View {
         VStack(alignment: .leading){
             Text("Audio App 🎙").font(.title)
             Text("Play audio and listen to yourself").font(.subheadline)
             ProgressView(value: audioController.progress)
-            Toggle("isRecMode", isOn: $isMicAvailable).onChange(of: isMicAvailable) { value in
-                audioController.audioMode = value == true ? .playAndRecord : .playback
-            }
+            Toggle("isRecMode", isOn: $audioController.isMicAvailable)
             HStack{
                 Button(action: audioController.switchPlayPause) {
                     if audioController.playerState == .paused {
@@ -35,7 +33,7 @@ struct ContentView: View {
                     audioController.selectMic(mic)
                     }
                 }) {
-                if isMicAvailable {
+                if audioController.isMicAvailable {
                     Text(mic.name).foregroundColor(.accentColor)
                     if mic.isActive {
                         Image(systemName: "checkmark").foregroundColor(.accentColor)

@@ -9,7 +9,6 @@ struct Notifications {
 
     init(onRouteChange: @escaping(() -> Void)) {
         self.onRouteChange = onRouteChange
-        print("settou on route change")
         setupNotifications()
 
     }
@@ -23,6 +22,7 @@ struct Notifications {
     func handleMediaOsReset() -> InterruptionAction {
         return { (_) in
             print("handleMediaOsReset")
+            onRouteChange()
         }
     }
     

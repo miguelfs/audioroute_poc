@@ -1,7 +1,7 @@
 
 import AVFoundation
 
-enum AudioCoreError: Error { case NotSupportedCategoryError, UnnalowedEngineRewiring, MissingTracksError }
+enum AudioCoreError: Error { case NotSupportedCategoryError, UnnalowedEngineRewiring, MissingTracksError, MissingRouteError }
 
 typealias FinishPlayingCallback = () -> Void
 
@@ -12,20 +12,33 @@ struct Track: Hashable {
 
 class AudioCore {
     private let session = AVAudioSession.sharedInstance()
-    private let engine = AVAudioEngine.init()
+    private var engine = AVAudioEngine.init()
     private var tracks = Set<Track>()
     private var onFinishPlaying: () -> Void
     public var audioRoute = AudioRoute()
-    private let notifications: Notifications
-    
+    private var notifications: Notifications!
+    var routeChange: () -> Void = {}
     init(category: AVAudioSession.Category,
          completionHandler: @escaping (() -> Void),
-         onRouteChange: @escaping (() -> Void)) {
+         onRouteChange: @escaping (() -> Void),
+         onPreemptPlayback: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
+//        try! session.setCategory(category)
         try! session.setActive(true)
-        notifications = Notifications(onRouteChange: onRouteChange)
-        
+        routeChange = {
+//            var category = AVAudioSession.sharedInstance().category
+//            if category == .soloAmbient {
+//                category = .playback
+//                onPreemptPlayback()
+//            } else {
+                self.updateCategory(category)
+//            }
+            onRouteChange()
+        }
+        notifications = Notifications(onRouteChange: routeChange)
+
         try! setEngine(category)
+        
         attachSignalSample()
         try! engine.start()
     }
@@ -43,6 +56,14 @@ class AudioCore {
         if engine.isRunning {
             throw AudioCoreError.UnnalowedEngineRewiring
         }
+        if audioRoute.getCurrentInput() == "" || audioRoute.getCurrentOutput() == "" {
+            throw AudioCoreError.MissingRouteError
+        }
+//        if engine.outputNode.outputFormat(forBus: 0).sampleRate == 0 &&
+//            engine.inputNode.inputFormat(forBus: 0).sampleRate == 0 {
+//            clearTracks()
+//            engine = AVAudioEngine.init()
+//        }
         switch mode {
         case .playback:
             engine.connect(engine.mainMixerNode, to: engine.outputNode, format: engine.outputNode.outputFormat(forBus: 0))
@@ -81,7 +102,19 @@ class AudioCore {
         rewind(track)
     }
     
-    func play() {
+    private func clearTracks() {
+        for track in tracks {
+            engine.detach(track.node)
+        }
+        tracks.removeAll()
+    }
+    
+    func play() throws {
+//        if audioRoute.getCurrentInput() == "" || audioRoute.getCurrentOutput() == "" {
+////            throw AudioCoreError.MissingRouteError
+//            routeChange()
+//        }
+    //    print(AVAudioSession.sharedInstance().category)
         for track in tracks {
             track.node.play()
         }

@@ -25,8 +25,14 @@ class AudioController: ObservableObject {
     @Published var progress = 0.0
     @Published var playerState: PlayerState = .paused
     @Published var mics = [Mic(name: "first mic"), Mic(name: "second mic")]
-    
-    @Published var audioMode: AudioMode = .playback {
+
+    @Published var isMicAvailable = false {
+                willSet(value) {
+                    self.audioMode = value == true ? .playAndRecord : .playback
+                }
+            }
+
+    private var audioMode: AudioMode = .playback {
         willSet(value) {            
             self.audioCore.updateCategory(mapModeToCategory(mode: value))
         }
@@ -40,6 +46,10 @@ class AudioController: ObservableObject {
             }
             }, onRouteChange: {
                 self.mics = self.getMics()
+            },
+            onPreemptPlayback: {
+                self.isMicAvailable = false
+                self.audioMode = .playback
             })
         mics = getMics()
     }
@@ -61,7 +71,7 @@ class AudioController: ObservableObject {
     
     func switchPlayPause() {
         if playerState == .paused {
-            audioCore.play()
+            try! audioCore.play()
             playerState = .playing
             return
         }
