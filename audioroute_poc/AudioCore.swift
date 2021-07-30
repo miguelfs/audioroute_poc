@@ -16,12 +16,14 @@ class AudioCore {
     private var tracks = Set<Track>()
     private var onFinishPlaying: () -> Void
     public var audioRoute = AudioRoute()
-    private let notifications = Notifications()
+    private let notifications: Notifications
     
-    init(category: AVAudioSession.Category, completionHandler: @escaping (() -> Void)) {
+    init(category: AVAudioSession.Category,
+         completionHandler: @escaping (() -> Void),
+         onRouteChange: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
         try! session.setActive(true)
-        setNotifications()
+        notifications = Notifications(onRouteChange: onRouteChange)
         
         try! setEngine(category)
         attachSignalSample()
@@ -36,9 +38,7 @@ class AudioCore {
         try! engine.start()
         
     }
-    
-    private func setNotifications() {}
-    
+        
     private func setEngine(_ mode: AVAudioSession.Category) throws {
         if engine.isRunning {
             throw AudioCoreError.UnnalowedEngineRewiring

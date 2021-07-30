@@ -4,9 +4,14 @@ typealias InterruptionAction = (Notification) -> Void
 typealias Handler = (AudioCore) -> InterruptionAction
 
 struct Notifications {
+    var onRouteChange: (() -> Void)!
     
-    init() {
+
+    init(onRouteChange: @escaping(() -> Void)) {
+        self.onRouteChange = onRouteChange
+        print("settou on route change")
         setupNotifications()
+
     }
     private func setupNotifications() {
         NotificationCenter.default.addObserver(forName: AVAudioSession.routeChangeNotification, object: nil, queue: nil, using: self.handleOnRouteChange())
@@ -114,6 +119,7 @@ struct Notifications {
     
     private func newDeviceAvailableHandler() {
         print("headphone or bluetooth detected...")
+        onRouteChange()
         return
     }
     
@@ -122,9 +128,11 @@ struct Notifications {
             let previousRoute = info[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription
         else {
             print("could not detect previous route configuration")
+            onRouteChange()
             return
         }
         print("previous route = ", previousRoute)
+        onRouteChange()
         return
     }
 }

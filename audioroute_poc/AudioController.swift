@@ -33,12 +33,19 @@ class AudioController: ObservableObject {
     }
     var audioCore: AudioCore!
     init() {
-        self.audioCore = AudioCore(category: mapModeToCategory(mode: audioMode), completionHandler: {
+        self.audioCore = AudioCore(category: mapModeToCategory(mode: audioMode),
+            completionHandler: {
             DispatchQueue.main.async {
                 self.playerState = .paused
             }
-        })
-        mics = audioCore.audioRoute.getAvailableInputs().map{Mic(name: $0, isActive: $0 == getActiveMic())}
+            }, onRouteChange: {
+                self.mics = self.getMics()
+            })
+        mics = getMics()
+    }
+    
+    func getMics() -> [Mic] {
+        return audioCore.audioRoute.getAvailableInputs().map{Mic(name: $0, isActive: $0 == getActiveMic())}
     }
     
     func getActiveMic() -> String {
