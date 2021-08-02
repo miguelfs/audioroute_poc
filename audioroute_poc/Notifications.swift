@@ -23,6 +23,7 @@ struct Notifications {
     func handleMediaOsReset() -> InterruptionAction {
         return { (_) in
             print("handleMediaOsReset")
+            onRouteChange()
         }
     }
     
