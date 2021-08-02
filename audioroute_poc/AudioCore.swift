@@ -46,7 +46,7 @@ class AudioCore {
         try! engine.start()
         
     }
-        
+    
     private func setEngine(_ mode: AVAudioSession.Category) throws {
         if engine.isRunning {
             throw AudioCoreError.UnnalowedEngineRewiring
@@ -69,9 +69,9 @@ class AudioCore {
     
     private func rewind(_ track: Track) {
         let handler = {
-                track.node.pause()
-                self.rewind(track)
-                self.onFinishPlaying()
+            track.node.pause()
+            self.rewind(track)
+            self.onFinishPlaying()
         }
         track.node.scheduleFile(track.file, at: nil, completionHandler: handler)
     }
