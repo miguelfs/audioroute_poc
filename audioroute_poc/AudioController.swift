@@ -25,7 +25,11 @@ class AudioController: ObservableObject {
     @Published var progress = 0.0
     @Published var playerState: PlayerState = .paused
     @Published var mics = [Mic(name: "first mic"), Mic(name: "second mic")]
-    
+    @Published var isMicAvailable = false {
+                willSet(value) {
+                    self.audioMode = value == true ? .playAndRecord : .playback
+                }
+            }
     @Published var audioMode: AudioMode = .playback {
         willSet(value) {            
             self.audioCore.updateCategory(mapModeToCategory(mode: value))
