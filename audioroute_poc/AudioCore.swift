@@ -16,18 +16,26 @@ class AudioCore {
     private var tracks = Set<Track>()
     private var onFinishPlaying: () -> Void
     public var audioRoute = AudioRoute()
-    private let notifications: Notifications
+    private var notifications: Notifications!
     
     init(category: AVAudioSession.Category,
          completionHandler: @escaping (() -> Void),
          onRouteChange: @escaping (() -> Void)) {
         onFinishPlaying = completionHandler
         try! session.setActive(true)
-        notifications = Notifications(onRouteChange: onRouteChange)
-        
+        let routeChange = {
+            self.updateCategory()
+            onRouteChange()
+        }
+        notifications = Notifications(onRouteChange: routeChange)
         try! setEngine(category)
         attachSignalSample()
         try! engine.start()
+    }
+    
+    func updateCategory() {
+        let value = AVAudioSession.sharedInstance().category
+        updateCategory(value)
     }
     
     func updateCategory(_ value: AVAudioSession.Category) {
