@@ -5,10 +5,12 @@ typealias Handler = (AudioCore) -> InterruptionAction
 
 struct Notifications {
     var onRouteChange: (() -> Void)!
+    var onMediaReset: (() -> Void)!
     
 
-    init(onRouteChange: @escaping(() -> Void)) {
+    init(onRouteChange: @escaping(() -> Void), onMediaReset: @escaping(() -> Void)) {
         self.onRouteChange = onRouteChange
+        self.onMediaReset = onMediaReset
         print("settou on route change")
         setupNotifications()
 
@@ -23,7 +25,7 @@ struct Notifications {
     func handleMediaOsReset() -> InterruptionAction {
         return { (_) in
             print("handleMediaOsReset")
-            onRouteChange()
+            onMediaReset()
         }
     }
     

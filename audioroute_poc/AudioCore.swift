@@ -12,8 +12,8 @@ struct Track: Hashable {
 
 class AudioCore {
     private let session = AVAudioSession.sharedInstance()
-    private let engine = AVAudioEngine.init()
-    private var tracks = Set<Track>()
+    private var engine = AVAudioEngine.init()
+    private var track: Track!
     private var onFinishPlaying: () -> Void
     public var audioRoute = AudioRoute()
     private var notifications: Notifications!
@@ -27,7 +27,22 @@ class AudioCore {
             self.updateCategory()
             onRouteChange()
         }
-        notifications = Notifications(onRouteChange: routeChange)
+        let onMediaReset = {
+            self.engine.stop()
+            try! self.session.setActive(false)
+            // sometimes, detaching stucks without throwing error
+            //self.engine.detach(self.track.node)
+            self.engine = AVAudioEngine.init()
+            try! AVAudioSession.sharedInstance().setCategory(.playAndRecord)
+            try! self.setEngine(.playAndRecord)
+//            self.engine.attach(self.track.node)
+//            self.engine.connect(self.track.node, to: self.engine.mainMixerNode, format: self.engine.outputNode.outputFormat(forBus: 0))
+//            self.rewind(self.track)
+            try! self.session.setActive(true)
+            try! self.engine.start()
+            onRouteChange()
+        }
+        notifications = Notifications(onRouteChange: routeChange, onMediaReset: onMediaReset)
         try! setEngine(category)
         attachSignalSample()
         try! engine.start()
@@ -82,22 +97,17 @@ class AudioCore {
         let file = try! AVAudioFile(forReading: url)
         
         let playerNode = AVAudioPlayerNode()
-        let track = Track(node: playerNode, file: file)
-        tracks.insert(track)
-        engine.attach(playerNode)
-        engine.connect(playerNode, to: engine.mainMixerNode, format: engine.outputNode.outputFormat(forBus: 0))
+        track = Track(node: playerNode, file: file)
+        engine.attach(track.node)
+        engine.connect(track.node, to: engine.mainMixerNode, format: engine.outputNode.outputFormat(forBus: 0))
         rewind(track)
     }
     
     func play() {
-        for track in tracks {
             track.node.play()
-        }
     }
     
     func pause() {
-        for track in tracks {
             track.node.pause()
-        }
     }
 }
